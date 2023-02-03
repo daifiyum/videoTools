@@ -1,7 +1,7 @@
 import sys, os, subprocess, json, time
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QSystemTrayIcon, QMenu
 from PySide6.QtCore import QFile, QObject, QThread, Signal
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QAction
 from assets.ui.ui_app import Ui_MainWindow
 
 
@@ -16,18 +16,25 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        # 窗口配置
-        self.setWindowTitle('视频工作台')
-        self.setWindowIcon(QIcon("./assets/images/app.png"))
         # 一些初始化
         self.setup_thread()
         self.bt_list = [self.ui.bt_format, self.ui.bt_audio, self.ui.bt_mz]
+        self.app_icon = QIcon("./assets/images/app.png")
+
+        # 窗口配置
+        self.setWindowTitle('视频工作台')
+        self.setWindowIcon(self.app_icon)
+        
         # 选取视频
         self.ui.get_video.clicked.connect(self.get_video)
         self.ui.v_rate_idea.clicked.connect(self.v_rate_idea)
+
+        # 托盘
+        self.createTrayIcon()
+        self.trayIcon.show()
     def message(self,title,content):
         msgBox = QMessageBox()
-        msgBox.setWindowIcon(QIcon("./assets/images/app.png"))
+        msgBox.setWindowIcon(self.app_icon)
         msgBox.setWindowTitle(title)
         msgBox.setText(content)
         msgBox.exec()
@@ -46,7 +53,8 @@ class MainWindow(QMainWindow):
             shell=True, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT,
-            universal_newlines=True)
+            universal_newlines=True,
+            encoding='UTF-8')
         json_data = json.loads(p.stdout.read())
         bit_rate = float(json_data['streams'][0]['bit_rate'])
         def convert(value):
@@ -94,17 +102,23 @@ class MainWindow(QMainWindow):
         self.ui.work_tips.setText(text)
         self.ui.work_tips.setStyleSheet("color:" + color)
         self.ui.work_tips.repaint()
+    
     def setup_thread(self):
         self.main_thread = QThread(self)
         self.work_thread = WorkThread()
         self.work_thread.moveToThread(self.main_thread)
-
+        # self.main_thread.finished.connect(self.work_thread.deleteLater)
+        # self.main_thread.finished.connect(lambda: print(self.work_thread))
         self.ui.bt_format.clicked.connect(lambda: self.start_thread(self.do_comline(0)))
         self.ui.bt_audio.clicked.connect(lambda: self.start_thread(self.do_comline(1)))
         self.ui.bt_mz.clicked.connect(lambda: self.start_thread(self.do_comline()))
+        # 传递信号给work线程
         self.mw_sig.connect(self.work_thread.run_proc)
+
         self.work_thread.stop_sig.connect(self.stop_thread)
         self.work_thread.log_text.connect(self.update_log)
+
+        
 
     def start_thread(self, comline):
         if self.get_video_path:
@@ -118,17 +132,37 @@ class MainWindow(QMainWindow):
             self.message('警告','请先选取视频！')
     def update_log(self,r):
         self.ui.log_text.append(r)
-    def stop_thread(self):
+    def stop_thread(self,r):
         self.main_thread.quit()
         self.main_thread.wait()
-        self.work_tips('完成啦~', 'green')
-        self.ui.out_path.setText(self.root_file)
+        if r == '0':
+            self.work_tips('完成', 'green')
+            self.ui.out_path.setText(self.root_file)
+        else:
+            self.work_tips('失败啦！', 'red')
         for i in self.bt_list:
             i.setEnabled(True)
 
-
+    #创建托盘图标
+    def createTrayIcon(self):
+        aRestore = QAction('显示', self, triggered = self.showNormal)
+        aQuit = QAction('退出', self, triggered = QApplication.instance().quit)
+        
+        menu = QMenu(self)
+        menu.addAction(aRestore)
+        menu.addAction(aQuit)
+        
+        self.trayIcon = QSystemTrayIcon(self)
+        self.trayIcon.setIcon(self.app_icon)
+        self.trayIcon.setContextMenu(menu)
+    def closeEvent(self, event):
+        if self.trayIcon.isVisible() and self.main_thread.isRunning():
+            self.message('提示','当前还有任务在执行，将最小化到托盘')
+            self.hide()
+            event.ignore()
+        
 class WorkThread(QObject):
-    stop_sig = Signal()
+    stop_sig = Signal(str)
     log_text = Signal(str)
     def __init__(self):
         super().__init__()
@@ -138,10 +172,12 @@ class WorkThread(QObject):
             shell=True, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT,
-            universal_newlines=True)
-        for line in p.stdout:
-            self.log_text.emit(line.replace('\n', ''))
-        self.stop_sig.emit()
+            universal_newlines=True,
+            encoding='UTF-8')
+        for i in p.stdout:
+            self.log_text.emit(i.replace('\n', ''))
+        p.wait()
+        self.stop_sig.emit(str(p.returncode))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
