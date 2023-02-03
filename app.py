@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self.ui.out_path.clear()
     # 函数 获取视频信息
     def get_video_info(self, v_path):
-        p= subprocess.Popen(f'ffprobe -v quiet -print_format json -show_streams -i {v_path}', 
+        p= subprocess.Popen(f'ffprobe -v quiet -print_format json -show_streams -i "{v_path}"', 
             shell=True, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.STDOUT,
