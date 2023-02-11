@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QMainWindow, QPushButton,
-    QSizePolicy, QSpacerItem, QTextBrowser, QToolButton,
-    QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QMainWindow, QProgressBar,
+    QPushButton, QSizePolicy, QSpacerItem, QTextBrowser,
+    QToolButton, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(646, 496)
+        MainWindow.resize(695, 521)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -219,22 +219,37 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_10)
 
+        self.horizontalLayout_12 = QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.bt_good = QPushButton(self.groupBox_2)
+        self.bt_good.setObjectName(u"bt_good")
+
+        self.horizontalLayout_12.addWidget(self.bt_good)
+
+        self.good_size = QLineEdit(self.groupBox_2)
+        self.good_size.setObjectName(u"good_size")
+
+        self.horizontalLayout_12.addWidget(self.good_size)
+
+        self.good_value = QLineEdit(self.groupBox_2)
+        self.good_value.setObjectName(u"good_value")
+
+        self.horizontalLayout_12.addWidget(self.good_value)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_12)
+
         self.horizontalLayout_13 = QHBoxLayout()
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.v_rate_idea = QPushButton(self.groupBox_2)
-        self.v_rate_idea.setObjectName(u"v_rate_idea")
+        self.bt_crf = QPushButton(self.groupBox_2)
+        self.bt_crf.setObjectName(u"bt_crf")
 
-        self.horizontalLayout_13.addWidget(self.v_rate_idea)
+        self.horizontalLayout_13.addWidget(self.bt_crf)
 
-        self.v_rate_idea_size = QLineEdit(self.groupBox_2)
-        self.v_rate_idea_size.setObjectName(u"v_rate_idea_size")
+        self.crf_value = QLineEdit(self.groupBox_2)
+        self.crf_value.setObjectName(u"crf_value")
 
-        self.horizontalLayout_13.addWidget(self.v_rate_idea_size)
-
-        self.v_rate_idea_value = QLineEdit(self.groupBox_2)
-        self.v_rate_idea_value.setObjectName(u"v_rate_idea_value")
-
-        self.horizontalLayout_13.addWidget(self.v_rate_idea_value)
+        self.horizontalLayout_13.addWidget(self.crf_value)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_13)
@@ -259,32 +274,51 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_6)
 
-        self.horizontalLayout_12 = QHBoxLayout()
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.label_13 = QLabel(self.groupBox_2)
-        self.label_13.setObjectName(u"label_13")
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.label_6 = QLabel(self.groupBox_2)
+        self.label_6.setObjectName(u"label_6")
 
-        self.horizontalLayout_12.addWidget(self.label_13)
+        self.horizontalLayout_14.addWidget(self.label_6)
 
-        self.out_path = QTextBrowser(self.groupBox_2)
-        self.out_path.setObjectName(u"out_path")
-        self.out_path.setMaximumSize(QSize(16777215, 40))
+        self.progressBar = QProgressBar(self.groupBox_2)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setAutoFillBackground(False)
+        self.progressBar.setValue(0)
+        self.progressBar.setTextVisible(True)
+        self.progressBar.setOrientation(Qt.Horizontal)
+        self.progressBar.setInvertedAppearance(False)
+        self.progressBar.setTextDirection(QProgressBar.TopToBottom)
 
-        self.horizontalLayout_12.addWidget(self.out_path)
+        self.horizontalLayout_14.addWidget(self.progressBar)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_12)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_14)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.use_about = QPushButton(self.groupBox_2)
+        self.use_about.setObjectName(u"use_about")
+
+        self.horizontalLayout_15.addWidget(self.use_about)
+
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_7)
 
         self.label_7 = QLabel(self.groupBox_2)
         self.label_7.setObjectName(u"label_7")
         self.label_7.setStyleSheet(u"color: gray;")
         self.label_7.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.verticalLayout_3.addWidget(self.label_7)
+        self.horizontalLayout_15.addWidget(self.label_7)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_15)
 
 
         self.verticalLayout.addWidget(self.groupBox_2)
@@ -324,16 +358,21 @@ class Ui_MainWindow(object):
         self.a_codec_value.setItemText(0, QCoreApplication.translate("MainWindow", u"mp3", None))
 
         self.a_format_value.setText(QCoreApplication.translate("MainWindow", u"mp3", None))
-        self.bt_mz.setText(QCoreApplication.translate("MainWindow", u"\u7801/\u5e27\u7387\u5904\u7406", None))
-        self.i_m.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7801\u7387(\u9ed8\u8ba4\u4e0d\u4fee\u6539)", None))
-        self.i_z.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u5e27\u7387(\u9ed8\u8ba430)", None))
-        self.v_rate_idea.setText(QCoreApplication.translate("MainWindow", u"\u7801\u7387\u8ba1\u7b97", None))
-        self.v_rate_idea_size.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u89c6\u9891\u5927\u5c0f", None))
-        self.v_rate_idea_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7ed3\u679c", None))
+        self.bt_mz.setText(QCoreApplication.translate("MainWindow", u"\u7801\u5e27\u5904\u7406", None))
+        self.i_m.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7801\u7387", None))
+        self.i_z.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u5e27\u7387", None))
+        self.bt_good.setText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u5927\u5c0f", None))
+        self.good_size.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u5927\u5c0f(\u5355\u4f4dM)", None))
+        self.good_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u7801\u7387", None))
+        self.bt_crf.setText(QCoreApplication.translate("MainWindow", u"CRF", None))
+        self.crf_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0-51", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u72b6\u6001\uff1a", None))
         self.work_tips.setText(QCoreApplication.translate("MainWindow", u"\u5f85\u5904\u7406...", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"\u8f93\u51fa\uff1a", None))
-        self.out_path.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u8f93\u51fa\u8def\u5f84", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u8fdb\u5ea6\uff1a", None))
+#if QT_CONFIG(tooltip)
+        self.progressBar.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.use_about.setText(QCoreApplication.translate("MainWindow", u"\u4f7f\u7528\u8bf4\u660e", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u6765\u81ea\uff1awww.dnxrzl.com", None))
     # retranslateUi
 

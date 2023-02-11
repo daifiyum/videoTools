@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>646</width>
-    <height>496</height>
+    <width>695</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -310,21 +310,46 @@
               </size>
              </property>
              <property name="text">
-              <string>码/帧率处理</string>
+              <string>码帧处理</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QLineEdit" name="i_m">
              <property name="placeholderText">
-              <string>码率(默认不修改)</string>
+              <string>码率</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QLineEdit" name="i_z">
              <property name="placeholderText">
-              <string>帧率(默认30)</string>
+              <string>帧率</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <widget class="QPushButton" name="bt_good">
+             <property name="text">
+              <string>理想大小</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="good_size">
+             <property name="placeholderText">
+              <string>理想大小(单位M)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="good_value">
+             <property name="placeholderText">
+              <string>理想码率</string>
              </property>
             </widget>
            </item>
@@ -333,23 +358,16 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_13">
            <item>
-            <widget class="QPushButton" name="v_rate_idea">
+            <widget class="QPushButton" name="bt_crf">
              <property name="text">
-              <string>码率计算</string>
+              <string>CRF</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="v_rate_idea_size">
+            <widget class="QLineEdit" name="crf_value">
              <property name="placeholderText">
-              <string>理想视频大小</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="v_rate_idea_value">
-             <property name="placeholderText">
-              <string>结果</string>
+              <string>0-51</string>
              </property>
             </widget>
            </item>
@@ -390,24 +408,36 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <layout class="QHBoxLayout" name="horizontalLayout_14">
            <item>
-            <widget class="QLabel" name="label_13">
+            <widget class="QLabel" name="label_6">
              <property name="text">
-              <string>输出：</string>
+              <string>进度：</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QTextBrowser" name="out_path">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>40</height>
-              </size>
+            <widget class="QProgressBar" name="progressBar">
+             <property name="toolTip">
+              <string/>
              </property>
-             <property name="placeholderText">
-              <string>输出路径</string>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+             <property name="textVisible">
+              <bool>true</bool>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="textDirection">
+              <enum>QProgressBar::TopToBottom</enum>
              </property>
             </widget>
            </item>
@@ -427,17 +457,41 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_7">
-           <property name="styleSheet">
-            <string notr="true">color: gray;</string>
-           </property>
-           <property name="text">
-            <string>来自：www.dnxrzl.com</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <item>
+            <widget class="QPushButton" name="use_about">
+             <property name="text">
+              <string>使用说明</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="styleSheet">
+              <string notr="true">color: gray;</string>
+             </property>
+             <property name="text">
+              <string>来自：www.dnxrzl.com</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
