@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>695</width>
-    <height>521</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <property name="title">
        <string>日志</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QTextBrowser" name="log_text">
          <property name="placeholderText">
@@ -46,11 +46,18 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>选择视频：</string>
+              <string>视频输入：</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="v_input">
+             <property name="placeholderText">
+              <string>请选取视频</string>
              </property>
             </widget>
            </item>
@@ -61,18 +68,30 @@
              </property>
             </widget>
            </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>视频输出：</string>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="v_output">
+             <property name="placeholderText">
+              <string>默认保存到“下载”路径</string>
              </property>
-            </spacer>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="lay_v">
+             <property name="text">
+              <string>...</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -217,7 +236,7 @@
         <property name="title">
          <string>操作</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
@@ -241,6 +260,16 @@
              <item>
               <property name="text">
                <string>libx264</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>libx265</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>libxvid</string>
               </property>
              </item>
             </widget>
@@ -316,8 +345,11 @@
            </item>
            <item>
             <widget class="QLineEdit" name="i_m">
+             <property name="text">
+              <string/>
+             </property>
              <property name="placeholderText">
-              <string>码率</string>
+              <string>码率（Kbps）</string>
              </property>
             </widget>
            </item>
@@ -342,14 +374,7 @@
            <item>
             <widget class="QLineEdit" name="good_size">
              <property name="placeholderText">
-              <string>理想大小(单位M)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="good_value">
-             <property name="placeholderText">
-              <string>理想码率</string>
+              <string>理想大小（MB）</string>
              </property>
             </widget>
            </item>
@@ -484,7 +509,7 @@
               <string notr="true">color: gray;</string>
              </property>
              <property name="text">
-              <string>来自：www.dnxrzl.com</string>
+              <string>作者：daifiyum</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

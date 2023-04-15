@@ -6,8 +6,9 @@ from assets.ui.ui_app import Ui_MainWindow
 
 
 class MainWindow(QMainWindow):
+    # 线程信号
     mw_sig = Signal(str)
-    # 全局变量
+    # 全局属性
     root_file = os.environ['HOMEDRIVE'] + os.environ['HOMEPATH'] + '\Downloads'
     get_video_path = ''
     get_video_duration = 0
@@ -16,25 +17,24 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowTitle('视频工作台')
+        self.app_icon = QIcon("./assets/images/app.png")
+        self.setWindowIcon(self.app_icon)
 
         # 一些初始化
         self.setup_thread()
         self.bt_list = [self.ui.bt_format, self.ui.bt_audio, self.ui.bt_mz, self.ui.bt_good, self.ui.bt_crf]
-        self.app_icon = QIcon("./assets/images/app.png")
-
-        # 窗口配置
-        self.setWindowTitle('视频工作台')
-        self.setWindowIcon(self.app_icon)
 
         # 验证器
         self.ui.good_size.setValidator(QIntValidator())
+        self.ui.i_m.setValidator(QIntValidator())
+        self.ui.i_z.setValidator(QIntValidator())
+        self.ui.crf_value.setValidator(QIntValidator())
 
-        # 一些绑定
+        # 杂项按钮组
         self.ui.get_video.clicked.connect(self.get_video)
+        self.ui.lay_v.clicked.connect(self.v_output)
         self.ui.use_about.clicked.connect(self.about)
-        # 合成命令相关
-        self.ui.good_size.textEdited.connect(self.v_rate_idea)
-        self.ui.good_size.setEnabled(False)
 
         # 托盘
         self.createTrayIcon()
@@ -49,17 +49,34 @@ class MainWindow(QMainWindow):
         msgBox.setWindowTitle(title)
         msgBox.setText(content)
         msgBox.exec()
-    # 函数 选取视频
+    # 选取视频
     def get_video(self):
         fname, _ = QFileDialog.getOpenFileName(self, '选择文件', self.root_file)
         if fname == "":
             return
         self.get_video_path = fname
+        self.video_init(fname)
+        self.ui.v_input.setText(fname)
+    # 设置存放位置
+    def v_output(self):
+        fname = QFileDialog.getExistingDirectory(self, '选择存放路径', self.root_file)
+        if fname == "":
+            return
+        self.ui.v_output.setText(fname)
+    # 数据初始化
+    def video_init(self, v_path):
         self.ui.good_size.setEnabled(True)
-        self.get_video_info(fname)
         self.work_tips()
         self.ui.progressBar.setValue(0)
-    # 函数 获取视频信息
+        # 视频信息初始化
+        video_data = self.get_video_info(v_path)
+        self.ui.v_bit_rate.setText(video_data["bit_rate"])
+        self.ui.v_fps.setText(video_data["fps"])
+        self.ui.codec_name.setText(video_data["v_code"])
+        self.ui.a_codec_name.setText(video_data["a_code"])
+        # 获取视频时常
+        self.get_video_duration = video_data["v_duration"]
+    # 获取视频信息
     def get_video_info(self, v_path):
         p= subprocess.Popen(f'ffprobe -v quiet -print_format json -show_streams -i "{v_path}"', 
             shell=True, 
@@ -68,24 +85,19 @@ class MainWindow(QMainWindow):
             universal_newlines=True,
             encoding='UTF-8')
         json_data = json.loads(p.stdout.read())
+        # 码率
         bit_rate = float(json_data['streams'][0]['bit_rate'])
-        def convert(value):
-            units = ["b/s", "kb/s", "Mb/s", "Gb/s"]
-            size = 1024.0
-            for i in range(len(units)):
-                if (value / size) < 1:
-                    return "%.2f%s" % (value, units[i])
-                value = value / size
-        bit_rate = convert(bit_rate)
-        fps = json_data['streams'][0]['r_frame_rate'].replace('/1', '帧/秒')
-        self.ui.v_bit_rate.setText(bit_rate)
-        self.ui.v_fps.setText(fps)
-        self.ui.codec_name.setText(json_data['streams'][0]['codec_name'])
-        a_codec = json_data['streams'][1]['codec_name']
-        if a_codec:
-            self.ui.a_codec_name.setText(a_codec)
-        # 获取视频时常
-        self.get_video_duration = json_data['streams'][0]['duration']
+        bit_rate = str(int(bit_rate) // 1000) + "Kbps"
+        # 帧率
+        fps = json_data['streams'][0]['r_frame_rate']
+        fps = str(int(fps[0:fps.rfind('/')]) / int(fps.split("/")[1])) + "帧/秒"
+        # 视频编码
+        v_code = json_data['streams'][0]['codec_name']
+        # 音频编码
+        a_code = json_data['streams'][1]['codec_name']
+        # 视频时长
+        v_duration = json_data['streams'][0]['duration']
+        return {'bit_rate': bit_rate, "fps": fps, "v_code": v_code, "a_code": a_code, "v_duration": v_duration}
     # 码率计算
     def v_rate_idea(self):
         if self.get_video_duration:
@@ -93,24 +105,21 @@ class MainWindow(QMainWindow):
                 v_rate_idea_size = int(float(self.ui.good_size.text()))
                 v_duration = int(float(self.get_video_duration))
                 avg_rate = (v_rate_idea_size/v_duration)*8
-                self.ui.good_value.setText(str(round(avg_rate,2))+'M')
-        else:
-            self.message('警告', '请先选取视频！')
+                return str(round(avg_rate,2))+'M'
     # 合成命令
     def do_comline(self, type=None):
         视频路径 = self.get_video_path
         视频格式 = os.path.splitext(self.get_video_path)[-1]
-        输出 = f'{self.root_file}\{time.time()}'
+        输出 = f'{self.ui.v_output.text()}/{time.time()}' if self.ui.v_output.text() else f'{self.root_file}\{time.time()}'
         帧率 = f'-r {self.ui.i_z.text()}' if self.ui.i_z.text() else ''
-        码率 = f'-b:v {self.ui.i_m.text()}' if self.ui.i_m.text() else ''
+        码率 = f'-b:v {self.ui.i_m.text()}K' if self.ui.i_m.text() else ''
         视编码器 = self.ui.v_codec_value.currentText()
         音编码器 = self.ui.a_codec_value.currentText()
         视格式 = self.ui.v_format_value.text()
         音格式 = self.ui.a_format_value.text()
         理想大小 = self.ui.good_size.text()
-        理想码率 = self.ui.good_value.text()
+        理想码率 = self.v_rate_idea()
         CRF = self.ui.crf_value.text()
-
         if type == 0:
             if 视格式:
                 return f'ffmpeg -i "{视频路径}" -c:v {视编码器} {输出}.{视格式}'
@@ -131,7 +140,7 @@ class MainWindow(QMainWindow):
         self.ui.work_tips.setText(text)
         self.ui.work_tips.setStyleSheet("color:" + color)
         self.ui.work_tips.repaint()
-    
+    # 线程初始化
     def setup_thread(self):
         self.main_thread = QThread(self)
         self.work_thread = WorkThread()
@@ -143,15 +152,14 @@ class MainWindow(QMainWindow):
         self.ui.bt_good.clicked.connect(lambda: self.start_thread(self.do_comline(2)))
         self.ui.bt_crf.clicked.connect(lambda: self.start_thread(self.do_comline(3)))
         self.ui.bt_mz.clicked.connect(lambda: self.start_thread(self.do_comline()))
-        # 传递信号给work线程
+        
         self.mw_sig.connect(self.work_thread.run_proc)
-
         self.work_thread.stop_sig.connect(self.stop_thread)
         self.work_thread.log_text.connect(self.update_log)
         self.work_thread.progressBar.connect(self.progress)
 
         
-
+    # 线程启动
     def start_thread(self, comline):
         if self.get_video_path and comline:
             for i in self.bt_list:
@@ -194,16 +202,21 @@ class MainWindow(QMainWindow):
             self.message('提示','当前还有任务在执行，将最小化到托盘')
             self.hide()
             event.ignore()
-        
+
+# 任务类     
 class WorkThread(QObject):
     stop_sig = Signal(str)
     log_text = Signal(str)
     progressBar = Signal(int)
+    duration_re = re.compile(r'Duration:\s*(\d+):(\d+):(\d+\.\d+),')
+    time_re = re.compile(r"time=\s*(\d+):(\d+):(\d+\.\d+)")
+    duration = None
+    time = None
+
     def __init__(self):
         super().__init__()
-
+    # 视频处理
     def run_proc(self, r):
-        duration = None
         p = subprocess.Popen(r, 
             shell=True, 
             stdout=subprocess.PIPE, 
@@ -211,38 +224,34 @@ class WorkThread(QObject):
             universal_newlines=True,
             encoding='UTF-8')
         for i in p.stdout:
-            self.log_text.emit(i.replace('\n', ''))
-            duration_res = re.search(r'Duration: (?P<duration>\S+)', i)
-            if duration_res is not None:
-                duration = duration_res.groupdict()['duration']
-                duration = re.sub(r',', '', duration)
-
-            result = re.search(r'time=(?P<time>\S+)', i)
-            # print(duration, result)
-            if result is not None and duration is not None:
-                elapsed_time = result.groupdict()['time']
-
-                currentTime = self.get_seconds(elapsed_time)
-                allTime = self.get_seconds(duration)
-
-                progress = currentTime * 100/allTime
-                # print(int(progress))
-                self.progressBar.emit(int(progress))
+            line = i.replace('\n', '')
+            progress = self.funProgressBar(line)
+            self.log_text.emit(line)
+            if progress is not None:
+                self.progressBar.emit(progress)
+           
         p.wait()
         self.stop_sig.emit(str(p.returncode))
+    # 进度条
+    def funProgressBar(self, line):
+        duration_match = self.duration_re.search(line)
+        if duration_match:
+            hours, minutes, seconds = map(float, duration_match.groups())
+            self.duration = hours * 3600 + minutes * 60 + seconds
 
-    def get_seconds(self, time):
-        h = int(time[0:2])
-        m = int(time[3:5])
-        s = int(time[6:8])
-        ms = int(time[9:12])
-        ts = (h * 60 * 60) + (m * 60) + s + (ms / 1000)
-        return ts
+        time_match = self.time_re.search(line)
+        if time_match:
+            hours, minutes, seconds = map(float, time_match.groups())
+            self.time = hours * 3600 + minutes * 60 + seconds
+
+        if self.duration is not None and self.time is not None:
+            progress = self.time / self.duration
+            progress = int(float('{:.2f}'.format(progress)) * 100)
+            return progress
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
     window = MainWindow()
     window.show()
-
     sys.exit(app.exec())

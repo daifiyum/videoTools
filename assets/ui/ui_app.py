@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'ui_app.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -24,19 +24,19 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(695, 521)
+        MainWindow.resize(695, 551)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
-        self.horizontalLayout_8 = QHBoxLayout(self.groupBox)
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.log_text = QTextBrowser(self.groupBox)
         self.log_text.setObjectName(u"log_text")
 
-        self.horizontalLayout_8.addWidget(self.log_text)
+        self.verticalLayout_3.addWidget(self.log_text)
 
 
         self.horizontalLayout.addWidget(self.groupBox)
@@ -48,21 +48,42 @@ class Ui_MainWindow(object):
         self.groupBox_3.setMaximumSize(QSize(310, 16777215))
         self.verticalLayout_2 = QVBoxLayout(self.groupBox_3)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.label = QLabel(self.groupBox_3)
         self.label.setObjectName(u"label")
 
-        self.horizontalLayout_2.addWidget(self.label)
+        self.horizontalLayout_8.addWidget(self.label)
+
+        self.v_input = QLineEdit(self.groupBox_3)
+        self.v_input.setObjectName(u"v_input")
+
+        self.horizontalLayout_8.addWidget(self.v_input)
 
         self.get_video = QToolButton(self.groupBox_3)
         self.get_video.setObjectName(u"get_video")
 
-        self.horizontalLayout_2.addWidget(self.get_video)
+        self.horizontalLayout_8.addWidget(self.get_video)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_8)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.label_8 = QLabel(self.groupBox_3)
+        self.label_8.setObjectName(u"label_8")
+
+        self.horizontalLayout_2.addWidget(self.label_8)
+
+        self.v_output = QLineEdit(self.groupBox_3)
+        self.v_output.setObjectName(u"v_output")
+
+        self.horizontalLayout_2.addWidget(self.v_output)
+
+        self.lay_v = QToolButton(self.groupBox_3)
+        self.lay_v.setObjectName(u"lay_v")
+
+        self.horizontalLayout_2.addWidget(self.lay_v)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -150,8 +171,8 @@ class Ui_MainWindow(object):
         self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.groupBox_2.setMaximumSize(QSize(310, 16777215))
-        self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_4 = QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.bt_format = QPushButton(self.groupBox_2)
@@ -161,6 +182,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.bt_format)
 
         self.v_codec_value = QComboBox(self.groupBox_2)
+        self.v_codec_value.addItem("")
+        self.v_codec_value.addItem("")
         self.v_codec_value.addItem("")
         self.v_codec_value.setObjectName(u"v_codec_value")
 
@@ -173,7 +196,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.v_format_value)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_5)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_5)
 
         self.horizontalLayout_9 = QHBoxLayout()
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
@@ -196,7 +219,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.addWidget(self.a_format_value)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_9)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_9)
 
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
@@ -217,7 +240,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.addWidget(self.i_z)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_10)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
 
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
@@ -231,13 +254,8 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_12.addWidget(self.good_size)
 
-        self.good_value = QLineEdit(self.groupBox_2)
-        self.good_value.setObjectName(u"good_value")
 
-        self.horizontalLayout_12.addWidget(self.good_value)
-
-
-        self.verticalLayout_3.addLayout(self.horizontalLayout_12)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_12)
 
         self.horizontalLayout_13 = QHBoxLayout()
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
@@ -252,7 +270,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.addWidget(self.crf_value)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_13)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_13)
 
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -272,7 +290,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.addItem(self.horizontalSpacer_2)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_6)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_6)
 
         self.horizontalLayout_14 = QHBoxLayout()
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
@@ -293,11 +311,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.addWidget(self.progressBar)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_14)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_14)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.verticalLayout_4.addItem(self.verticalSpacer)
 
         self.horizontalLayout_15 = QHBoxLayout()
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
@@ -318,7 +336,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.addWidget(self.label_7)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_15)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_15)
 
 
         self.verticalLayout.addWidget(self.groupBox_2)
@@ -338,8 +356,12 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u65e5\u5fd7", None))
         self.log_text.setPlaceholderText(QCoreApplication.translate("MainWindow", u"FFmpeg\u8fd0\u884c\u65e5\u5fd7", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"\u53c2\u6570", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u89c6\u9891\uff1a", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"\u89c6\u9891\u8f93\u5165\uff1a", None))
+        self.v_input.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u8bf7\u9009\u53d6\u89c6\u9891", None))
         self.get_video.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"\u89c6\u9891\u8f93\u51fa\uff1a", None))
+        self.v_output.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u9ed8\u8ba4\u4fdd\u5b58\u5230\u201c\u4e0b\u8f7d\u201d\u8def\u5f84", None))
+        self.lay_v.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"\u89c6\u9891\u7f16\u7801\uff1a", None))
         self.codec_name.setText(QCoreApplication.translate("MainWindow", u"\u6682\u65e0", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u89c6\u9891\u7801\u7387\uff1a", None))
@@ -351,6 +373,8 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None))
         self.bt_format.setText(QCoreApplication.translate("MainWindow", u"\u683c\u5f0f\u8f6c\u6362", None))
         self.v_codec_value.setItemText(0, QCoreApplication.translate("MainWindow", u"libx264", None))
+        self.v_codec_value.setItemText(1, QCoreApplication.translate("MainWindow", u"libx265", None))
+        self.v_codec_value.setItemText(2, QCoreApplication.translate("MainWindow", u"libxvid", None))
 
         self.v_codec_value.setPlaceholderText("")
         self.v_format_value.setText(QCoreApplication.translate("MainWindow", u"mp4", None))
@@ -359,11 +383,11 @@ class Ui_MainWindow(object):
 
         self.a_format_value.setText(QCoreApplication.translate("MainWindow", u"mp3", None))
         self.bt_mz.setText(QCoreApplication.translate("MainWindow", u"\u7801\u5e27\u5904\u7406", None))
-        self.i_m.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7801\u7387", None))
+        self.i_m.setText("")
+        self.i_m.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7801\u7387\uff08Kbps\uff09", None))
         self.i_z.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u5e27\u7387", None))
         self.bt_good.setText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u5927\u5c0f", None))
-        self.good_size.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u5927\u5c0f(\u5355\u4f4dM)", None))
-        self.good_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u7801\u7387", None))
+        self.good_size.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u7406\u60f3\u5927\u5c0f\uff08MB\uff09", None))
         self.bt_crf.setText(QCoreApplication.translate("MainWindow", u"CRF", None))
         self.crf_value.setPlaceholderText(QCoreApplication.translate("MainWindow", u"0-51", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u72b6\u6001\uff1a", None))
@@ -373,6 +397,6 @@ class Ui_MainWindow(object):
         self.progressBar.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.use_about.setText(QCoreApplication.translate("MainWindow", u"\u4f7f\u7528\u8bf4\u660e", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u6765\u81ea\uff1awww.dnxrzl.com", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u4f5c\u8005\uff1adaifiyum", None))
     # retranslateUi
 
